@@ -12,44 +12,49 @@ using System.Windows.Forms;
 
 namespace Foodtruck.Grafico
 {
-    public partial class ManterLanches : Form
+    public partial class ManterLanche : Form
     {
-        public ManterLanches()
+        public Lanche lanches { get; set; }
+        public ManterLanche()
         {
             InitializeComponent();
         }
-        public Lanche LancheSelecionado { get; set; }
-        Lanche lanche = new Lanche();
+
+        private void ManterLanche_Load(object sender, EventArgs e)
+        {
+          
+        }
 
         private void btSalvar_Click(object sender, EventArgs e)
         {
-            if (Int64.TryParse(tbId.Text, out long longConvertido))
+
+            Lanche lanche = new Lanche();
+            if (Int64.TryParse(textCodigo.Text, out long value))
             {
-                lanche.Id = longConvertido;
+                lanche.Id = value;
             }
             else
             {
                 lanche.Id = -1;
-                //passa indentificador com valor negativo se não conseguir converter
             }
-            if (decimal.TryParse(tbValor.Text, out decimal decimalConvertido))
+            lanche.Nome = textNome.Text;
+            if (Decimal.TryParse(textValor.Text, out decimal valor))
             {
-                lanche.Valor = decimalConvertido;
+                lanche.Valor = valor;
             }
-                lanche.Nome = tbNome.Text;
-                Validacao validacao;
-            if (LancheSelecionado == null)
+            else{
+                lanche.Valor = 0;
+            }
+           
+            Validacao validacao;
+            if (lanches == null)
             {
                 validacao = Program.Gerenciador.CadastraLanche(lanche);
             }
             else
             {
-                validacao = Program.Gerenciador.AlteraLanches(lanche);
-
+                validacao = Program.Gerenciador.AlteraLanche(lanche);
             }
-
-
-
             if (!validacao.Valido)
             {
                 String mensagemValidacao = "";
@@ -63,9 +68,8 @@ namespace Foodtruck.Grafico
             }
             else
             {
-                MessageBox.Show("Lanche salvo com sucesso");
+                MessageBox.Show("Lanche foi salvo com sucesso");
             }
-
             this.Close();
         }
 
@@ -74,15 +78,14 @@ namespace Foodtruck.Grafico
             this.Close();
         }
 
-        private void ManterLanches_Shown(object sender, EventArgs e)
+        private void ManterLanche_Load_1(object sender, EventArgs e)
         {
-            if (LancheSelecionado != null)
+            if (lanches != null)
             {
-                this.tbId.Text = LancheSelecionado.Id.ToString();
-                this.tbNome.Text = LancheSelecionado.Nome;
-                this.tbValor.Text = LancheSelecionado.Valor.ToString();           
+                this.textNome.Text = lanches.Nome.ToString();
+                this.textCodigo.Text = lanches.Id.ToString();
+                this.textValor.Text = lanches.Valor.ToString();
             }
         }
     }
-    
 }

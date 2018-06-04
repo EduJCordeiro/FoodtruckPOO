@@ -11,47 +11,54 @@ using System.Windows.Forms;
 
 namespace Foodtruck.Grafico
 {
-    public partial class TelaListaBebidas : Form
+    public partial class TelaListaBedidas : Form
     {
-        public TelaListaBebidas()
+        
+        public TelaListaBedidas()
         {
             InitializeComponent();
         }
 
-        private void AbreTelaInclusaoAlteracao(Bebida bebidaSelecionada)
+        private void TelaListaBedidas_Load(object sender, EventArgs e)
         {
-            ManterBebidas tela = new ManterBebidas();
-            tela.MdiParent = this.MdiParent;
-            tela.BebidaSelecionada = bebidaSelecionada;
-            tela.FormClosed += Tela_FormClosed;
-            tela.Show();
-
+            CarregaBebidas();
         }
+
         private void btAdicionar_Click(object sender, EventArgs e)
         {
-            AbreTelaInclusaoAlteracao(null);
+            abrirTela(null);
         }
-        private void CarregarBebidas()
+        private void abrirTela(Bebida bedida)
+        {
+            ManterBedidas tela = new ManterBedidas();
+            tela.MdiParent = this.MdiParent;
+            tela.bebidas = bedida;
+            tela.FormClosed += Tela_FormClosed;
+            tela.Show();
+        }
+        private void Tela_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            CarregaBebidas();
+        }
+        private void CarregaBebidas()
         {
             dgBebidas.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgBebidas.MultiSelect = false;
             dgBebidas.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dgBebidas.AutoGenerateColumns = false;
-            List<Bebida> bebidas = Program.Gerenciador.TodasAsBebidas();
-            dgBebidas.DataSource = bebidas;
+            List<Bebida> bebida = Program.Gerenciador.TodasAsBebidas();
+            dgBebidas.DataSource = bebida;
         }
 
-        
-        private void Tela_FormClosed(object sender, FormClosedEventArgs e)
+        private void btAlterar_Click(object sender, EventArgs e)
         {
-            CarregarBebidas();
+            if (ValidaDados())
+            {
+                Bebida bebida = (Bebida)dgBebidas.SelectedRows[0].DataBoundItem;
+                abrirTela(bebida);
+            }
         }
-
-        private void TelaListaBebidas_Load(object sender, EventArgs e)
-        {
-            CarregarBebidas();
-        }
-        private bool VerificarSelecao()
+        private bool ValidaDados()
         {
             if (dgBebidas.SelectedRows.Count <= 0)
             {
@@ -60,37 +67,27 @@ namespace Foodtruck.Grafico
             }
             return true;
         }
-        private void btAlterar_Click(object sender, EventArgs e)
-        {
-            if (VerificarSelecao())
-            {
-                Bebida bebidaSelecionado = (Bebida)dgBebidas.SelectedRows[0].DataBoundItem;
-                AbreTelaInclusaoAlteracao(bebidaSelecionado);
-            }
-        }
 
         private void btRemover_Click(object sender, EventArgs e)
         {
-            if (VerificarSelecao())
+            if (ValidaDados())
             {
-                
                 DialogResult resultado = MessageBox.Show("Tem certeza?", "Quer remover?", MessageBoxButtons.OKCancel);
                 if (resultado == DialogResult.OK)
                 {
-                    Bebida bebidaSelecionada = (Bebida)dgBebidas.SelectedRows[0].DataBoundItem;
-                    var validacao = Program.Gerenciador.RemoverBebida(bebidaSelecionada);
+                    Bebida bebida = (Bebida)dgBebidas.SelectedRows[0].DataBoundItem;
+                    var validacao = Program.Gerenciador.RemoverBebida(bebida);
                     if (validacao.Valido)
                     {
                         MessageBox.Show("Bebida removida com sucesso");
                     }
                     else
                     {
-                        MessageBox.Show("Ocorreu um problema ao remover a Bebida");
+                        MessageBox.Show("Ocorreu um problema ao remover a bebida");
                     }
-                    CarregarBebidas();
+                    CarregaBebidas();
                 }
             }
         }
     }
-
 }

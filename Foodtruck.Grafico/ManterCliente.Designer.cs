@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
@@ -38,17 +37,8 @@
             this.tbEmail = new System.Windows.Forms.TextBox();
             this.btSalvar = new System.Windows.Forms.Button();
             this.btCancelar = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.SuspendLayout();
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(28, 31);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(43, 13);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Código:";
             // 
             // label2
             // 
@@ -83,7 +73,7 @@
             // tbId
             // 
             this.tbId.Location = new System.Drawing.Point(74, 31);
-            this.tbId.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbId.Margin = new System.Windows.Forms.Padding(2);
             this.tbId.Name = "tbId";
             this.tbId.Size = new System.Drawing.Size(150, 20);
             this.tbId.TabIndex = 4;
@@ -91,7 +81,7 @@
             // tbNome
             // 
             this.tbNome.Location = new System.Drawing.Point(74, 66);
-            this.tbNome.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbNome.Margin = new System.Windows.Forms.Padding(2);
             this.tbNome.Name = "tbNome";
             this.tbNome.Size = new System.Drawing.Size(527, 20);
             this.tbNome.TabIndex = 5;
@@ -99,7 +89,7 @@
             // tbCpf
             // 
             this.tbCpf.Location = new System.Drawing.Point(74, 102);
-            this.tbCpf.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbCpf.Margin = new System.Windows.Forms.Padding(2);
             this.tbCpf.Name = "tbCpf";
             this.tbCpf.Size = new System.Drawing.Size(150, 20);
             this.tbCpf.TabIndex = 6;
@@ -107,7 +97,7 @@
             // tbEmail
             // 
             this.tbEmail.Location = new System.Drawing.Point(74, 139);
-            this.tbEmail.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.tbEmail.Margin = new System.Windows.Forms.Padding(2);
             this.tbEmail.Name = "tbEmail";
             this.tbEmail.Size = new System.Drawing.Size(526, 20);
             this.tbEmail.TabIndex = 7;
@@ -115,7 +105,7 @@
             // btSalvar
             // 
             this.btSalvar.Location = new System.Drawing.Point(504, 181);
-            this.btSalvar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btSalvar.Margin = new System.Windows.Forms.Padding(2);
             this.btSalvar.Name = "btSalvar";
             this.btSalvar.Size = new System.Drawing.Size(95, 48);
             this.btSalvar.TabIndex = 8;
@@ -126,13 +116,23 @@
             // btCancelar
             // 
             this.btCancelar.Location = new System.Drawing.Point(400, 181);
-            this.btCancelar.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btCancelar.Margin = new System.Windows.Forms.Padding(2);
             this.btCancelar.Name = "btCancelar";
             this.btCancelar.Size = new System.Drawing.Size(96, 48);
             this.btCancelar.TabIndex = 9;
             this.btCancelar.Text = "Cancelar";
             this.btCancelar.UseVisualStyleBackColor = true;
             this.btCancelar.Click += new System.EventHandler(this.btCancelar_Click);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(28, 31);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(43, 13);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Código:";
             // 
             // ManterCliente
             // 
@@ -149,10 +149,11 @@
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "ManterCliente";
             this.Text = "ManterCliente";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.Load += new System.EventHandler(this.ManterCliente_Load);
             this.Shown += new System.EventHandler(this.ManterCliente_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -160,8 +161,6 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
@@ -171,5 +170,6 @@
         private System.Windows.Forms.TextBox tbEmail;
         private System.Windows.Forms.Button btSalvar;
         private System.Windows.Forms.Button btCancelar;
+        private System.Windows.Forms.Label label1;
     }
 }

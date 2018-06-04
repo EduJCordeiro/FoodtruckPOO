@@ -1,7 +1,9 @@
-﻿using System;
+﻿using Foodtruck.Negocio.Persistencia;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Data.Entity;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -120,21 +122,28 @@ namespace Foodtruck.Grafico
 
         private void bebidasToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            TelaListaBebidas tela = new TelaListaBebidas();
-            tela.MdiParent = this;
-            tela.Show();
+            TelaListaBedidas telaListaBedidas = new TelaListaBedidas();
+            telaListaBedidas.MdiParent = this;
+            telaListaBedidas.Show();
+        }
+
+        private void lancheToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TelaListaLanche telaListaLanche = new TelaListaLanche();
+            telaListaLanche.MdiParent = this;
+            telaListaLanche.Show();
+        }
+
+        private void pedidosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            TelaListaPedidos telaListaPedidos = new TelaListaPedidos();
+            telaListaPedidos.MdiParent = this;
+            telaListaPedidos.Show();
         }
 
         private void TelaPrincipal_Load(object sender, EventArgs e)
         {
-
-        }
-
-        private void lanchesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            TelaListaLanches tela = new TelaListaLanches();
-            tela.MdiParent = this;
-            tela.Show();
+           
         }
     }
 }

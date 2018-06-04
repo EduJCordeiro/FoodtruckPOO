@@ -11,19 +11,12 @@ namespace Foodtruck.Negocio
     public class Gerenciador
     {
        
-        private Banco banco = new Banco();
+        private DadosBanco banco = new DadosBanco();
 
         public Validacao RemoverCliente(Cliente cliente)
         {
             Validacao validacao = new Validacao();
             banco.Clientes.Remove(cliente);
-            banco.SaveChanges();
-            return validacao;
-        }
-        public Validacao RemoverLanche(Lanche lanche)
-        {
-            Validacao validacao = new Validacao();
-            banco.Lanches.Remove(lanche);
             banco.SaveChanges();
             return validacao;
         }
@@ -34,45 +27,54 @@ namespace Foodtruck.Negocio
             banco.SaveChanges();
             return validacao;
         }
+
+        public Validacao RemoverLanche(Lanche lanche)
+        {
+            Validacao validacao = new Validacao();
+            banco.Lanches.Remove(lanche);
+            banco.SaveChanges();
+            return validacao;
+        }
+
         public Validacao AlterarCliente(Cliente clienteAlterado)
         {
-
             Validacao validacao = new Validacao();
             Cliente clienteBanco = BuscaClientePorId(clienteAlterado.Id);
-            
-            if (clienteAlterado.Id < 0)
-            {
-                validacao.Mensagens.Add("Id", "O indenfiticador deve constituir apenas números positivos");
-            }
-            //verifica se já tem alguma mensagem de erro e se tiver pula essa verificação
-            
+            clienteBanco.Nome = clienteAlterado.Nome;
+            clienteBanco.Email = clienteAlterado.Email;
+            clienteBanco.CPF = clienteAlterado.CPF;
+            this.banco.SaveChanges();
+            return validacao;
+        }
 
-            if (String.IsNullOrEmpty(clienteAlterado.CPF))
-            {
-                validacao.Mensagens.Add("CPF", "O campo CPF não pode ser nulo ou vazio");
-            }
-            if (String.IsNullOrEmpty(clienteAlterado.Nome))
-            {
-                validacao.Mensagens.Add("Nome", "O nome não pode ser nulo ou vazio");
-            }
+        public Validacao AlteraBebida(Bebida bebidaAlterada)
+        {
+            Validacao validacao = new Validacao();
+            Bebida bebs = BuscaBebidaPorId(bebidaAlterada.Id);
+            bebs.Nome = bebidaAlterada.Nome;
+            bebs.Tamanho = bebidaAlterada.Tamanho;
+            bebs.Valor = bebidaAlterada.Valor;
+            this.banco.SaveChanges();
+            return validacao;
+        }
 
-            if (String.IsNullOrEmpty(clienteAlterado.Email))
-            {
-                validacao.Mensagens.Add("Email", "O email não pode ser nulo ou vazio");
-            }
-
-            if (!clienteAlterado.Email.Contains("@") && validacao.Mensagens.Count == 0)
-            {
-                validacao.Mensagens.Add("Email", "Email no formato inválido");
-            }
-
-            if (validacao.Valido)
-            {
-                clienteBanco.Nome = clienteAlterado.Nome;
-                clienteBanco.Email = clienteAlterado.Email;
-                clienteBanco.CPF = clienteAlterado.CPF;
-                this.banco.SaveChanges();
-            }
+        public Validacao AlteraLanche(Lanche lancheAlterada)
+        {
+            Validacao validacao = new Validacao();
+            Lanche lanche = BuscaLanchePorId(lancheAlterada.Id);
+            lanche.Nome = lancheAlterada.Nome;
+            lanche.Valor = lancheAlterada.Valor;
+            this.banco.SaveChanges();
+            return validacao;
+        }
+        public Validacao AlteraPedido(Pedido pedidoAlterado)
+        {
+            Validacao validacao = new Validacao();
+            Pedido pedido = BuscaPedidoPorId(pedidoAlterado.Id);
+            pedido.Bebidas = pedidoAlterado.Bebidas;
+            pedido.NomeCliente = pedidoAlterado.Cliente.Nome;
+            pedido.Lanches = pedidoAlterado.Lanches;
+            this.banco.SaveChanges();
             return validacao;
         }
 
@@ -123,39 +125,9 @@ namespace Foodtruck.Negocio
             return validacao;
         }
 
-        public Validacao AlterarBebida(Bebida bebidaAlterada)
-        {
-            Validacao validacao = new Validacao();
-            Bebida bebidaBanco = BuscaBebidaPorId(bebidaAlterada.Id);
-
-            if (string.IsNullOrEmpty(bebidaAlterada.Nome))
-            {
-                validacao.Mensagens.Add("nome", "O nome não pode ser nulo ou vazio");
-            }
-
-            if (string.IsNullOrEmpty(Convert.ToString(bebidaAlterada.Tamanho)))
-            {
-                validacao.Mensagens.Add("tamanho", "O campo tamanho não pode ser nulo ou vazio");
-            }
-
-            if (string.IsNullOrEmpty(Convert.ToString(bebidaAlterada.Valor)))
-            {
-                validacao.Mensagens.Add("valor", "O campo valor não pode ser nulo ou vazio");
-            }
-
-            if (validacao.Valido)
-            {
-                bebidaBanco.Nome = bebidaAlterada.Nome;
-                bebidaBanco.Tamanho = bebidaAlterada.Tamanho;
-                bebidaBanco.Valor = bebidaAlterada.Valor;
-                this.banco.SaveChanges();
-            }
-            return validacao;
-        }
         public Validacao CadastraBebida(Bebida bebidaCadastrada)
         {
             Validacao validacao = new Validacao();
-
 
             if(this.banco.Bebidas.Where(x => x.Id == bebidaCadastrada.Id).Any())
             {
@@ -184,37 +156,14 @@ namespace Foodtruck.Negocio
             }
             return validacao;
         }
-        public Validacao AlteraLanches(Lanche lancheAlterado)
-        {
-           
-            Validacao validacao = new Validacao();
-            Lanche lancheBanco = BuscaLanchePorId(lancheAlterado.Id);
-            
-            if (string.IsNullOrEmpty(lancheAlterado.Nome))
-            {
-                validacao.Mensagens.Add("nome", "O nome não pode ser nulo ou vazio");
-            }
 
-            if (string.IsNullOrEmpty(Convert.ToString(lancheAlterado.Valor)))
-            {
-                validacao.Mensagens.Add("valor", "O campo valor não pode ser nulo ou vazio");
-            }
-
-            if (validacao.Valido)
-            {
-                lancheBanco.Nome = lancheAlterado.Nome;
-                lancheBanco.Valor = lancheAlterado.Valor;
-                this.banco.SaveChanges();
-            }
-            return validacao;
-        }
         public Validacao CadastraLanche(Lanche lancheCadastrado)
         {
             Validacao validacao = new Validacao();
 
             if (this.banco.Lanches.Where(x => x.Id == lancheCadastrado.Id).Any())
             {
-                validacao.Mensagens.Add("id", "Já existem uma bebida com esse código");
+                validacao.Mensagens.Add("id", "Já existem um lanche com esse código");
             }
 
             if (string.IsNullOrEmpty(lancheCadastrado.Nome))
@@ -268,7 +217,7 @@ namespace Foodtruck.Negocio
                     validacao.Mensagens.Add("bebida", "$Não existe nenhuma bebida cadastrada em um dos códigos informados");
                 }
             }
-
+            pedidoCadastrado.NomeCliente = pedidoCadastrado.Cliente.Nome;
             this.banco.Pedidos.Add(pedidoCadastrado);
             this.banco.SaveChanges();
 
@@ -281,30 +230,38 @@ namespace Foodtruck.Negocio
         }
         public Bebida BuscaBebidaPorId(long id)
         {
-            return this.banco.Bebidas.Where(b => b.Id == id).FirstOrDefault();
+            return this.banco.Bebidas.Where(c => c.Id == id).FirstOrDefault();
         }
         public Lanche BuscaLanchePorId(long id)
         {
-            return this.banco.Lanches.Where(b => b.Id == id).FirstOrDefault();
+            return this.banco.Lanches.Where(c => c.Id == id).FirstOrDefault();
+        }
+        public Pedido BuscaPedidoPorId(long id)
+        {
+            return this.banco.Pedidos.Where(c => c.Id == id).FirstOrDefault();
         }
         public List<Cliente> TodosOsClientes()
         {
             return this.banco.Clientes.ToList();
+           
         }
 
         public List<Bebida> TodasAsBebidas()
         {
-            return this.banco.Bebidas.ToList();
+           return this.banco.Bebidas.ToList();
+            
         }
 
         public List<Lanche> TodosOsLanches()
         {
             return this.banco.Lanches.ToList();
+            
         }
 
         public List<Pedido> TodosOsPedidos()
         {
             return this.banco.Pedidos.ToList();
+            
         }
     }
 }
